@@ -57,7 +57,19 @@ html, body{
   background-position:center;
 
   header{
-    
+    display:block;
+    width:100%;
+    height:50px;
+    background-color:#004a7a;
+  }
+
+  footer{
+    display:block;
+    width:100%;
+    height:50px;
+    background-color:#004a7a;
+    position:absolute;
+    bottom:0px;
   }
 
   h1{
