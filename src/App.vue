@@ -4,12 +4,13 @@
     <header>
       <h1>Birthday Reminder</h1>
       <nav>
-        <div v-on:click="menu();" class="hamburguer"><i class="fa" :class="menuClass" aria-hidden="true"></i></div>
-         <ul class="animated" v-bind:class="{  open: isOpen, slideInLeft: isOpen, slideOutLeft: !isOpen }"  >
-          <li><router-link to="/home">Birthday List</router-link></li>
-          <li><router-link to="/listado">Add Birthday</router-link></li>
-          <li><router-link to="/detalle">My Account</router-link></li>
-          <li><router-link to="/crear">Edit Birthday</router-link></li>
+        <div  v-on:click="menu();" class="hamburguer"><i class="fa" :class="menuClass" aria-hidden="true"></i></div>
+         <ul id="menuSlide" class="animated" v-bind:class="{  open: isOpen, slideInLeft: isOpen, slideOutLeft: !isOpen }"  >
+          <li class="menuItem" id="home" @click="closeNav();"><router-link to="/">Home</router-link></li>
+          <li class="menuItem" id="list" @click="closeNav();"><router-link to="/list">Birthday List</router-link></li>
+          <li class="menuItem" id="add" @click="closeNav();"><router-link to="/listado">Add Birthday</router-link></li>
+          <li class="menuItem" id="edit" @click="closeNav();"><router-link to="/crear">Edit Birthday</router-link></li>
+          <li class="menuItem" id="account" @click="closeNav();"><router-link to="/detalle">My Account</router-link></li>
         </ul>
       </nav>
     </header>
@@ -29,8 +30,24 @@
 <script>
 export default {
   name: 'app',
-  mounted(){
-    
+  
+  updated(){
+    //Menu, activo y no activo
+    var home = document.getElementById('home');
+    var list = document.getElementById('list');
+
+    var items = document.querySelectorAll('.menuItem');
+
+    // console.log(this.$route.name);
+
+    if((this.$route.name == "Home") || (this.$route.name == "Login") || (this.$route.name == "Account") ){
+      this.activeNav(items, home);
+    }else if( this.$route.name == "Birthday List" ){
+      this.activeNav(items, list);
+    }
+    //END Menu, activo y no activo
+
+
   },
   data() {
     return{
@@ -60,6 +77,21 @@ export default {
         this.menuSlide = 'slideOutLeft'
       }
       
+    },
+    closeNav: function(){
+      var menu = document.getElementById("menuSlide");
+
+      menu.classList.remove('slideInLeft', 'open'); 
+      menu.classList.add('slideOutLeft'); 
+      this.menu();
+      
+    },
+    activeNav: function(items, iten){
+      [].forEach.call(items, function(el) {
+          el.classList.remove("active");
+      });
+
+      iten.classList.add("active");
     }
   }
 }
@@ -76,118 +108,7 @@ loaders: [
 ] -->
 
 <style lang="scss">
-html, body{
-  padding:0px;
-  margin:0px;
-  height:100%;
-  box-sizing:border-box;
-}
-img{
-  max-width:100%;
-}
-#app{
-  width:100%;
-  height:100%;
-  font-family: 'Josefin Sans', sans-serif;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 0px;
-  padding:0px;
-  background-color:#0099ff;
-  box-sizing:border-box;
-  background-image:url("./assets/bg.jpg");
-  background-size:cover;
-  background-position:center;
-  position:fixed;
-  top:0px;
-  left:0px;
 
-  header{
-    display:block;
-    width:100%;
-    height:50px;
-    background-color:#004a7a;
+@import 'src/scss/style.scss';
 
-    nav{
-      position:absolute;
-      width:100%;
-
-      .hamburguer{
-        color:#ffffff;
-        font-size:30px;
-        position: absolute;
-        top: 10px;
-        left: 15px;
-        cursor:pointer;
-      }
-
-      ul{
-        position: fixed;
-        width:80%;
-        height:100%;
-        background-color:#002c49;
-        padding-top:40px;
-        margin:0px;
-        padding:0px;
-        margin-top:50px;
-        padding-top:40px;
-
-        li{
-          text-align:left;
-          list-style:none;
-          font-size:30px;
-          font-weight:300;
-          height:50px;
-          line-height:50px;
-          padding-left:40px;
-
-          &:hover{
-            background-color:#33566d;
-          }
-
-          a{
-            display:block;
-            text-decoration:none;
-            color:#ffffff;
-          }
-        }
-       
-      }
-    }
-    h1{
-      margin:0px;
-      padding:0px;
-      font-size:20px;
-      font-weight:300;
-      color:#ffffff;
-      float:right;
-      line-height:50px;
-      margin-right:20px;
-    }
-  }
-
-  footer{
-    display:block;
-    width:100%;
-    height:50px;
-    background-color:#004a7a;
-    position:absolute;
-    bottom:0px;
-
-    h1{
-      margin:0px;
-      padding:0px;
-      font-size:14px;
-      color:#8da7c2;
-      line-height:56px;
-    }
-  }
-
-
-
-  
-
-
-}
 </style>
