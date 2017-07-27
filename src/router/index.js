@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import jquery from 'jquery'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Create from '@/components/Create'

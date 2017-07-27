@@ -1,8 +1,7 @@
 <template>
   <div class="home">
-    <div class="logo" v-bind:class="{  small: loaded}">
-      <h1>Birthday Reminder</h1>
-      <img src="../assets/logo.png" alt="">
+    <h1>Birthday Reminder</h1>
+    <div class="logo">
     </div>
 
 
