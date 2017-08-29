@@ -366,6 +366,7 @@
 
 .bounceInDown {
   animation-name: bounceInDown;
+  visibility: visible !important;
 }
 
 @keyframes bounceInLeft {

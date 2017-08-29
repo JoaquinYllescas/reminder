@@ -16,13 +16,18 @@
   </div>
 </template>
 
+
 <script>
 let moment = require('moment');
 import axios from 'axios';
 import VueResource from 'vue-resource';
 
+
+
 //Para enviar parametros tendremos ke usar este componente, sino en servidor no llegaran bien.
 import urlSearchParams from 'url-search-params';
+import Push from 'push.js';
+
 export default {
   name: 'create',
   mounted(){
@@ -106,11 +111,14 @@ export default {
 
             
         }else{
-          console.log("Todo bien");
+          console.log("Todo bien. Cumplira anyos pronto.");
+          // Push.create('Hello World!')
+          notifications.usuarioCreado();
+
         }
 
 
-//Ejemplo
+//Ejemplo resta dias
 // var uno = moment('2016-07-12');
 // var dos = moment('2018-07-12');
 
@@ -148,9 +156,16 @@ export default {
         url: 'http://reminderapi.dev/conexionphp.php', params
       })
       .then((respuesta) => {
-          var dato = respuesta;
+          var dato = respuesta.data;
           // console.log("Yllescas");
-          console.log(respuesta);
+          //console.log(respuesta.data);
+          if(dato == "Done!"){
+
+          }else if(dato == "This email is already in use."){
+
+          }else{
+
+          }
 
       })
       .catch((error) => {

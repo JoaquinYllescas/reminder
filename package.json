@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "push.js": "^1.0.4",
     "remove": "^0.1.5",
     "url-search-params": "^0.10.0",
     "vue": "^2.3.3",

@@ -4,7 +4,7 @@ require("./apiphp.php");
 if($_REQUEST){
 
 	$contenido = json_encode($_REQUEST);
-	echo($contenido);
+	// echo($contenido);
 
 	$name = $_REQUEST['name'];
 	$email = $_REQUEST['email'];

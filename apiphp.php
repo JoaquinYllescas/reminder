@@ -31,19 +31,44 @@ class BaseClass {
 
 
    private function createUser($name, $email, $pass, $dateB, $dLeft, $years){
-   		echo($dateB);
+   		// echo($dateB);
 		$mysqli = new mysqli(HOST, USER, PASS, DBNAME);
 
-		
-		// // $q = "SELECT * FROM data";
-		$q = "INSERT INTO users (name, email, pass, dateB, dLeft, years) VALUES ('$name', '$email', '$pass', '$dateB', '$dLeft', '$years')";
-		
 
-		if( $mysqli->query($q) === TRUE ){
-			echo "Vamos";	
+
+
+		//Comprobar si el email existe
+		$query = "SELECT * from users where email ='$email'";
+		if ($result=mysqli_query($mysqli,$query)){
+
+		   if(mysqli_num_rows($result) > 0){
+		   		//El email existe
+		      echo "This email is already in use.";
+		    }else{
+
+		    	//Insertar en BBDD
+		    	//echo "Doesn't exist";
+		    	// $q = "SELECT * FROM data";
+				$q = "INSERT INTO users (name, email, pass, dateB, dLeft, years) VALUES ('$name', '$email', '$pass', '$dateB', '$dLeft', '$years')";
+				if( $mysqli->query($q) === TRUE ){
+					echo "Done!";
+				}else{
+					echo "Error: " . $q . "<br>" . $mysqli->error;
+				}
+
+		  	}
+
 		}else{
-			echo "Error: " . $q . "<br>" . $mysqli->error;
+		  	echo "We couldn't register your email. Please try later.";
 		}
+		//FIN Comprobar si el email existe
+
+
+
+
+
+		
+		
 
 
 
