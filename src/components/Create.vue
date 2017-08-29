@@ -9,7 +9,7 @@
       <input v-model="name" placeholder="Name" type="text">
       <input v-model="email" placeholder="Email" type="email">
       <input v-model="pass" placeholder="Password" type="password">
-      <datepicker  v-model="date" placeholder="Date" id="datePicker"></datepicker>
+      <datepicker  v-model="dateB" placeholder="Birthday" id="datePicker"></datepicker>
 
       <input class="send" type="submit" value="Create">
     </form>
@@ -19,6 +19,10 @@
 <script>
 let moment = require('moment');
 import axios from 'axios';
+import VueResource from 'vue-resource';
+
+//Para enviar parametros tendremos ke usar este componente, sino en servidor no llegaran bien.
+import urlSearchParams from 'url-search-params';
 export default {
   name: 'create',
   mounted(){
@@ -32,41 +36,129 @@ export default {
       name: "",
       email: "",
       pass: "",
-      date: "",
+      dateB: "",
       dLeft: ""
     }
   },
   methods: {
     crearCuenta: function(){
-  
-      let fecha = moment(this.date, "DD-MM-YYYY").toObject();
+      //Cumple
+      console.log(this.dateB);
+
+      //Cumple en MOMENT a OBJETO
+      let fecha = moment(this.dateB, "DD-MM-YYYY").toObject();
       console.log(fecha);
 
 
-      // Send a POST request 
+      //Dias restantes para el cumple en cso de ke no haya sido aun
+      var before = moment((fecha.months+1)+"."+fecha.date,'MM-DD');
+      console.log("Before :"+before);
+      var now = moment();
+      console.log("Now :"+now);
+
+
+
+
+
+
+      
+
+
+
+
+
+
+      let dLeft = before.diff(now, 'days');
+      console.log(dLeft);
+       
+
+
+        //Si ya ha pasado el cumple tendremos ke calcular hasta el anyo ke viene.
+
+        console.log(moment().year());
+        if(dLeft < 0){
+          // dLeft = now - cumpleAnyoSiguiente;
+          console.log("Pasamos x aki");
+
+         //Anyo actual
+          // console.log(moment().year());
+          let anyoActual = moment().year();
+
+          //Resta:
+            // cumple esta anyo
+            let cumple1 = ("'"+(anyoActual+1)+"-"+(fecha.months+1)+"-"+fecha.date+"'");   
+            cumple1 = moment(cumple1, "YYYY-MM-DD");
+            console.log(cumple1);
+
+
+            //Cumple siguiente anyo para diferencia
+            let hoyNextYear = ("'"+(anyoActual)+"-"+(moment().month()+1)+"-"+moment().date()+"'");
+
+            console.log(hoyNextYear);
+
+             hoyNextYear = moment(hoyNextYear, "YYYY-MM-DD");
+             console.log(hoyNextYear);
+
+           
+
+            //console.log(cumple1.diff(hoyNextYear, 'days'), ' dias de diferencia');
+            dLeft = cumple1.diff(hoyNextYear, 'days');
+
+            
+        }else{
+          console.log("Todo bien");
+        }
+
+
+//Ejemplo
+// var uno = moment('2016-07-12');
+// var dos = moment('2018-07-12');
+
+// console.log(dos.diff(uno, 'days'), ' dias de diferencia');
+//FIN Ejemplo
+
+
+      //Calculo los anyos ke tiene la persona
+      var iniYear = fecha.years;
+      var actualYear = moment().year();
+
+      var years = (actualYear-iniYear);
+
+
+
+
+      //Formateo Fecha para MySQL
+      var fechaCumple = fecha.years+"-"+(fecha.months+1)+"-"+fecha.date;
+
+       
+
+      //Forma correcta de mandar parametros por AXIOS
+      var params = new URLSearchParams();
+      params.append('name', this.name);
+      params.append('email', this.email);
+      params.append('pass', this.pass);
+      params.append('dateB', fechaCumple);
+      params.append('dLeft', dLeft);
+      params.append('years', years);
+
+
       axios({
         method: 'post',
-        url: 'http://reminderAPI.dev/create/',
-        data: {
-          name: this.name,
-          email: this.email,
-          pass: this.pass,
-          date: this.date,
-          dLeft: this.dLeft
-        }
+        type: 'JSON',
+        url: 'http://reminderapi.dev/conexionphp.php', params
+      })
+      .then((respuesta) => {
+          var dato = respuesta;
+          // console.log("Yllescas");
+          console.log(respuesta);
+
+      })
+      .catch((error) => {
+        console.log(error);
       });
 
 
 
-    //PETICION GET
-      // axios.get('http://reminderAPI.dev/user/'+this.id, {
-      // })
-      // .then(function (response) {
-      //   console.log(response.data);
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
 
       //Fecha por separado para pintar
       // let day = fecha.format('D');

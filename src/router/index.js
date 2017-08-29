@@ -7,7 +7,7 @@ import Create from '@/components/Create'
 import List from '@/components/List'
 
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
